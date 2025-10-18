@@ -370,60 +370,6 @@
             font-size: 0.75rem;
             color: #9ca3af;
         }
-
-        /* Estilos para la página de mallas */
-        .curriculum-tabs {
-            display: flex;
-            border-bottom: 1px solid #e5e7eb;
-            margin-bottom: 1.5rem;
-        }
-
-        .curriculum-tab {
-            padding: 0.75rem 1.5rem;
-            background: none;
-            border: none;
-            border-bottom: 2px solid transparent;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.15s ease;
-        }
-
-        .curriculum-tab.active {
-            border-bottom-color: #2563eb;
-            color: #2563eb;
-        }
-
-        .curriculum-content {
-            display: none;
-        }
-
-        .curriculum-content.active {
-            display: block;
-        }
-
-        .diagram-container {
-            margin: 1rem 0;
-            text-align: center;
-        }
-
-        .diagram-container img {
-            max-width: 100%;
-            border: 1px solid #e5e7eb;
-            border-radius: 0.5rem;
-        }
-
-        .prerequisites-list {
-            margin-top: 1rem;
-            padding-left: 1.5rem;
-        }
-
-        .prerequisites-list li {
-            margin-bottom: 0.5rem;
-        }
-
-        .malla-info {
-            margin-bottom: 1.5rem;
-        }
     </style>
 </head>
 <body>
@@ -566,70 +512,13 @@
         <div id="page-view-curriculum" class="page">
             <div class="card">
                 <div class="card-header">
-                    <h2 class="card-title">Mallas Curriculares y Prerequisitos</h2>
-                    <p class="card-subtitle">Consulta la estructura de cursos y prerequisitos según tu malla</p>
+                    <h2 class="card-title">Mallas Curriculares</h2>
+                    <p class="card-subtitle">Consulta las mallas curriculares disponibles</p>
                 </div>
-                
-                <div class="curriculum-tabs">
-                    <button id="tab-old" class="curriculum-tab active">Malla Antigua - IC05</button>
-                    <button id="tab-new" class="curriculum-tab">Malla Nueva - IC07</button>
-                </div>
-                
-                <div id="curriculum-old" class="curriculum-content active">
-                    <div class="malla-info">
-                        <h3>Malla Curricular Antigua - IC05</h3>
-                        <p>Visualiza la estructura de cursos y prerequisitos de la malla antigua IC05</p>
-                    </div>
-                    
-                    <h4>Diagrama de Malla</h4>
-                    <div class="diagram-container">
-                        <img src="https://lh7-rt.googleusercontent.com/formsz/AN7BsVAsu4luQG3_Yx2zc1tseu9-Wygf8xA7rwm-bLSN7awxS15mAYT38SyWU2ipjhxnQ17Ej0Bzjb7kioxLSvwpDbjeKkEtZUButKiGp3GxV-LrdChKmt6a5_6mbeq9nsNrtA5MO3b4chVugFSg6NCVHcqrIUrsnYjSzhWmTQ?key=UZ2NjLkEjrNU6DkKNO8YWw" alt="Diagrama de Malla Antigua" onerror="this.style.display='none'">
-                        <p class="card-subtitle">Si no puedes ver el diagrama, descárgalo <a href="https://lh7-rt.googleusercontent.com/formsz/AN7BsVAsu4luQG3_Yx2zc1tseu9-Wygf8xA7rwm-bLSN7awxS15mAYT38SyWU2ipjhxnQ17Ej0Bzjb7kioxLSvwpDbjeKkEtZUButKiGp3GxV-LrdChKmt6a5_6mbeq9nsNrtA5MO3b4chVugFSg6NCVHcqrIUrsnYjSzhWmTQ?key=UZ2NjLkEjrNU6DkKNO8YWw" target="_blank">aquí</a>.</p>
-                    </div>
-                    
-                    <h4>Diagrama de Prerequisitos</h4>
-                    <div class="diagram-container">
-                        <img src="https://lh7-rt.googleusercontent.com/formsz/AN7BsVANiig9MqY3eIv7EVuXnHR9rofDrs3Bpghua88Y1THzmC7W3kjp9Ntv8_6qbmtEO4B1Di1HxK7Js6kNv9UU6lZ5RyLoMz2IQ4zy8-CbMJi2DG6vlC0HHl8vpvC3UHJBPOe7lu1cB8YwagiOwuEOUN3SPXVl3qVyQhS8CA?key=UZ2NjLkEjrNU6DkKNO8YWw" alt="Diagrama de Prerequisitos Malla Antigua" onerror="this.style.display='none'">
-                        <p class="card-subtitle">Si no puedes ver el diagrama, descárgalo <a href="https://lh7-rt.googleusercontent.com/formsz/AN7BsVANiig9MqY3eIv7EVuXnHR9rofDrs3Bpghua88Y1THzmC7W3kjp9Ntv8_6qbmtEO4B1Di1HxK7Js6kNv9UU6lZ5RyLoMz2IQ4zy8-CbMJi2DG6vlC0HHl8vpvC3UHJBPOe7lu1cB8YwagiOwuEOUN3SPXVl3qVyQhS8CA?key=UZ2NjLkEjrNU6DkKNO8YWw" target="_blank">aquí</a>.</p>
-                    </div>
-                    
-                    <h4>Prerequisitos Principales</h4>
-                    <ul class="prerequisites-list">
-                        <li>Introducción a las Matemáticas es prerequisito de Álgebra I</li>
-                        <li>Álgebra I es prerequisito de Álgebra II</li>
-                        <li>Cálculo I es prerequisito de Cálculo II</li>
-                        <li>Cálculo II es prerequisito de Cálculo III</li>
-                        <li>Programación Computacional es prerequisito de Programación Orientada a Objetos</li>
-                    </ul>
-                </div>
-                
-                <div id="curriculum-new" class="curriculum-content">
-                    <div class="malla-info">
-                        <h3>Malla Curricular Nueva - IC07</h3>
-                        <p>Visualiza la estructura de cursos y prerequisitos de la malla nueva IC07</p>
-                    </div>
-                    
-                    <h4>Diagrama de Malla</h4>
-                    <div class="diagram-container">
-                        <img src="https://lh7-rt.googleusercontent.com/formsz/AN7BsVB61zAwoJwTWu9LDusXfuj3GTVKiBK7axvfUI1NRC9SOYoqF8wEND3C6KDtsGpdLAQFzfT8xIxx7yYHvNlqZpo1SpXjrtohZlOGTFBqX1b3fGQeQScrCibZ8-LaMZUx5bL2G864ayPmcwM9bYbHwGshS51yq0IbOgtbfA?key=UZ2NjLkEjrNU6DkKNO8YWw" alt="Diagrama de Malla Nueva" onerror="this.style.display='none'">
-                        <p class="card-subtitle">Si no puedes ver el diagrama, descárgalo <a href="https://lh7-rt.googleusercontent.com/formsz/AN7BsVB61zAwoJwTWu9LDusXfuj3GTVKiBK7axvfUI1NRC9SOYoqF8wEND3C6KDtsGpdLAQFzfT8xIxx7yYHvNlqZpo1SpXjrtohZlOGTFBqX1b3fGQeQScrCibZ8-LaMZUx5bL2G864ayPmcwM9bYbHwGshS51yq0IbOgtbfA?key=UZ2NjLkEjrNU6DkKNO8YWw" target="_blank">aquí</a>.</p>
-                    </div>
-                    
-                    <h4>Diagrama de Prerequisitos</h4>
-                    <div class="diagram-container">
-                        <img src="https://lh7-rt.googleusercontent.com/formsz/AN7BsVDHQAWJYRTwoaFCtjN4v-odLwHUG9-pOS8WeRvay62UuwVqf3QP4-F_49ZXJaYomwvj-YpArV1ZTqaJ07Jo74JHz-daNV0ktFukLCFBjBo5rh_v12RQIoXC65xWbLb2iBogjMm7l_B52rEMNu9Dxhx9qRZ87k-tkSpOEQ?key=UZ2NjLkEjrNU6DkKNO8YWw" alt="Diagrama de Prerequisitos Malla Nueva" onerror="this.style.display='none'">
-                        <p class="card-subtitle">Si no puedes ver el diagrama, descárgalo <a href="https://lh7-rt.googleusercontent.com/formsz/AN7BsVDHQAWJYRTwoaFCtjN4v-odLwHUG9-pOS8WeRvay62UuwVqf3QP4-F_49ZXJaYomwvj-YpArV1ZTqaJ07Jo74JHz-daNV0ktFukLCFBjBo5rh_v12RQIoXC65xWbLb2iBogjMm7l_B52rEMNu9Dxhx9qRZ87k-tkSpOEQ?key=UZ2NjLkEjrNU6DkKNO8YWw" target="_blank">aquí</a>.</p>
-                    </div>
-                    
-                    <h4>Prerequisitos Principales</h4>
-                    <ul class="prerequisites-list">
-                        <li>Introducción a las Matemáticas es prerequisito de Álgebra I</li>
-                        <li>Álgebra I es prerequisito de Álgebra II</li>
-                        <li>Cálculo I es prerequisito de Cálculo II</li>
-                        <li>Cálculo II es prerequisito de Cálculo III</li>
-                        <li>Programación Computacional es prerequisito de Programación Orientada a Objetos</li>
-                        <li>Estructura de Datos es prerequisito de Complejidad de Algoritmos</li>
-                    </ul>
+                <div class="empty-state">
+                    <div class="empty-icon">📚</div>
+                    <h3 class="empty-title">Mallas Curriculares</h3>
+                    <p class="empty-description">Aquí podrás consultar las mallas curriculares disponibles</p>
                 </div>
             </div>
         </div>
@@ -680,12 +569,6 @@
         const btnClearForm = document.getElementById('btn-clear-form');
         const subjectsList = document.querySelector('.subjects-list');
         const ticketsContainer = document.getElementById('tickets-container');
-        
-        // Elementos para las pestañas de mallas
-        const tabOld = document.getElementById('tab-old');
-        const tabNew = document.getElementById('tab-new');
-        const curriculumOld = document.getElementById('curriculum-old');
-        const curriculumNew = document.getElementById('curriculum-new');
 
         // Inicializar la aplicación
         function init() {
@@ -732,10 +615,6 @@
             
             // Limpiar formulario
             btnClearForm.addEventListener('click', clearForm);
-            
-            // Pestañas de mallas curriculares
-            tabOld.addEventListener('click', () => showCurriculum('old'));
-            tabNew.addEventListener('click', () => showCurriculum('new'));
         }
 
         // Mostrar una página específica
@@ -764,26 +643,6 @@
                     pageViewCurriculum.classList.add('active');
                     btnViewCurriculum.classList.add('active');
                     break;
-            }
-        }
-
-        // Mostrar una malla curricular específica
-        function showCurriculum(curriculum) {
-            // Ocultar todos los contenidos
-            curriculumOld.classList.remove('active');
-            curriculumNew.classList.remove('active');
-            
-            // Desactivar todas las pestañas
-            tabOld.classList.remove('active');
-            tabNew.classList.remove('active');
-            
-            // Mostrar el contenido seleccionado
-            if (curriculum === 'old') {
-                curriculumOld.classList.add('active');
-                tabOld.classList.add('active');
-            } else {
-                curriculumNew.classList.add('active');
-                tabNew.classList.add('active');
             }
         }
 
