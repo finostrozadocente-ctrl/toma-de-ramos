@@ -390,12 +390,17 @@
         .diagram-container {
             margin: 1rem 0;
             text-align: center;
+            background-color: #f8f9fa;
+            padding: 1rem;
+            border-radius: 0.5rem;
         }
 
         .diagram-container img {
             max-width: 100%;
             border: 1px solid #e5e7eb;
             border-radius: 0.5rem;
+            display: block;
+            margin: 0 auto;
         }
 
         .prerequisites-list {
@@ -876,6 +881,26 @@
                 min-width: 100%;
             }
         }
+        
+        /* Estilos para imágenes de placeholder */
+        .placeholder-image {
+            width: 100%;
+            height: 300px;
+            background-color: #f3f4f6;
+            border-radius: 0.5rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: #6b7280;
+            border: 1px dashed #d1d5db;
+        }
+        
+        .placeholder-image svg {
+            width: 64px;
+            height: 64px;
+            margin-bottom: 1rem;
+        }
     </style>
 </head>
 <body>
@@ -1150,7 +1175,7 @@
                     </button>
                     <button class="sidebar-nav-item">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915"></path>
+                            <path d="M9.671 4.136a2.34 2.34 0 0 1 4.659 0 a2.34 2.34 0 0 0 3.319 1.915 a2.34 2.34 0 0 1 2.33 4.033 a2.34 2.34 0 0 0 0 3.831 a2.34 2.34 0 0 1-2.33 4.033 a2.34 2.34 0 0 0-3.319 1.915 a2.34 2.34 0 0 1-4.659 0 a2.34 2.34 0 0 0-3.32-1.915 a2.34 2.34 0 0 1-2.33-4.033 a2.34 2.34 0 0 0 0-3.831 A2.34 2.34 0 0 1 6.35 6.051 a2.34 2.34 0 0 0 3.319-1.915"></path>
                             <circle cx="12" cy="12" r="3"></circle>
                         </svg>
                         <span>Configuración</span>
@@ -1288,8 +1313,116 @@
             "INT101 - Interdisciplinar"
         ];
 
-        // Almacenamiento de tickets
-        let tickets = JSON.parse(localStorage.getItem('tickets')) || [];
+        // Datos de ejemplo para el coordinador (8 tickets predefinidos)
+        const coordinatorTickets = [
+            {
+                id: 1,
+                rut: "12.345.678-9",
+                email: "ana.garcia@universidad.cl",
+                name: "Ana",
+                lastname: "García López",
+                requestTypes: ["tomar"],
+                curriculum: "antigua",
+                subjects: ["MAT101 - Introducción a las Matemáticas", "FIS101 - Introducción a la Física"],
+                situation: "Necesito tomar estos ramos para avanzar en mi malla curricular",
+                date: "15/03/2024",
+                status: "Pendiente"
+            },
+            {
+                id: 2,
+                rut: "23.456.789-0",
+                email: "carlos.martinez@universidad.cl",
+                name: "Carlos",
+                lastname: "Martínez Rojas",
+                requestTypes: ["cambiar-seccion"],
+                curriculum: "nueva",
+                subjects: ["PROG101 - Programación Computacional"],
+                situation: "Mi horario laboral cambió y necesito cambiar a una sección vespertina",
+                date: "16/03/2024",
+                status: "Aprobada"
+            },
+            {
+                id: 3,
+                rut: "34.567.890-1",
+                email: "maria.perez@universidad.cl",
+                name: "María",
+                lastname: "Pérez Silva",
+                requestTypes: ["botar", "tomar"],
+                curriculum: "antigua",
+                subjects: ["CAL101 - Cálculo I", "ALG101 - Álgebra I"],
+                situation: "Quiero botar Cálculo I porque me resulta muy difícil y tomar Álgebra I en su lugar",
+                date: "17/03/2024",
+                status: "Rechazada"
+            },
+            {
+                id: 4,
+                rut: "45.678.901-2",
+                email: "juan.rodriguez@universidad.cl",
+                name: "Juan",
+                lastname: "Rodríguez Fuentes",
+                requestTypes: ["cambiar"],
+                curriculum: "nueva",
+                subjects: ["POO101 - Programación Orientada a Objetos", "ED101 - Estructura de Datos"],
+                situation: "Necesito cambiar estos ramos porque tengo conflicto de horarios con mi práctica profesional",
+                date: "18/03/2024",
+                status: "Pendiente"
+            },
+            {
+                id: 5,
+                rut: "56.789.012-3",
+                email: "lucia.fernandez@universidad.cl",
+                name: "Lucía",
+                lastname: "Fernández Castro",
+                requestTypes: ["tomar"],
+                curriculum: "antigua",
+                subjects: ["CSI101 - Curso Sello Institucional I: Inglés I"],
+                situation: "Quiero adelantar este ramo para tener más disponibilidad el próximo semestre",
+                date: "19/03/2024",
+                status: "Aprobada con observaciones"
+            },
+            {
+                id: 6,
+                rut: "67.890.123-4",
+                email: "diego.silva@universidad.cl",
+                name: "Diego",
+                lastname: "Silva Mendoza",
+                requestTypes: ["cambiar-seccion"],
+                curriculum: "nueva",
+                subjects: ["MEC101 - Mecánica"],
+                situation: "Necesito cambiar a la sección del profesor González por recomendación de compañeros",
+                date: "20/03/2024",
+                status: "Pendiente"
+            },
+            {
+                id: 7,
+                rut: "78.901.234-5",
+                email: "sofia.herrera@universidad.cl",
+                name: "Sofía",
+                lastname: "Herrera González",
+                requestTypes: ["botar"],
+                curriculum: "antigua",
+                subjects: ["QUI101 - Química General"],
+                situation: "Me di cuenta que no necesito este ramo para mi especialización",
+                date: "21/03/2024",
+                status: "Aprobada"
+            },
+            {
+                id: 8,
+                rut: "89.012.345-6",
+                email: "pablo.munoz@universidad.cl",
+                name: "Pablo",
+                lastname: "Muñoz Ríos",
+                requestTypes: ["tomar", "cambiar-seccion"],
+                curriculum: "nueva",
+                subjects: ["ARQ101 - Arquitectura de Computadores", "ED101 - Estructura de Datos"],
+                situation: "Quiero tomar estos ramos y necesito cambiar de sección para acomodar mi horario de trabajo",
+                date: "22/03/2024",
+                status: "Pendiente"
+            }
+        ];
+
+        // Almacenamiento de tickets del estudiante
+        let studentTickets = JSON.parse(localStorage.getItem('studentTickets')) || [];
         
         // Elementos del DOM
         const loginPage = document.getElementById('login-page');
@@ -1321,7 +1454,6 @@
         const pendingRequests = document.getElementById('pending-requests');
         const approvedRequests = document.getElementById('approved-requests');
         const rejectedRequests = document.getElementById('rejected-requests');
-        const coordinatorRequestsTable = document.getElementById('coordinator-requests-table');
         const filterStatus = document.getElementById('filter-status');
         const filterType = document.getElementById('filter-type');
         const filterCurriculum = document.getElementById('filter-curriculum');
@@ -1332,12 +1464,12 @@
             // Generar lista de asignaturas
             generateSubjectsList();
             
-            // Actualizar contador de tickets
+            // Actualizar contador de tickets del estudiante
             updateTicketCount();
             
-            // Mostrar tickets si existen
-            if (tickets.length > 0) {
-                displayTickets();
+            // Mostrar tickets del estudiante si existen
+            if (studentTickets.length > 0) {
+                displayStudentTickets();
             } else {
                 displayEmptyTickets();
             }
@@ -1437,6 +1569,7 @@
                 case 'my-tickets':
                     pageMyTickets.classList.add('active');
                     btnMyTickets.classList.add('active');
+                    displayStudentTickets();
                     break;
             }
         }
@@ -1509,15 +1642,15 @@
                 status: 'Pendiente'
             };
             
-            // Agregar ticket a la lista
-            tickets.push(newTicket);
+            // Agregar ticket a la lista del estudiante
+            studentTickets.push(newTicket);
             
-            // Guardar en localStorage
-            localStorage.setItem('tickets', JSON.stringify(tickets));
+            // Guardar en localStorage (solo para el estudiante)
+            localStorage.setItem('studentTickets', JSON.stringify(studentTickets));
             
-            // Actualizar la interfaz
+            // Actualizar la interfaz del estudiante
             updateTicketCount();
-            displayTickets();
+            displayStudentTickets();
             
             // Mostrar confirmación y cambiar a la página de tickets
             alert('Ticket enviado correctamente');
@@ -1538,12 +1671,12 @@
             updateCurriculumPreview();
         }
 
-        // Actualizar el contador de tickets
+        // Actualizar el contador de tickets del estudiante
         function updateTicketCount() {
-            ticketCount.textContent = tickets.length;
+            ticketCount.textContent = studentTickets.length;
         }
 
-        // Mostrar mensaje cuando no hay tickets
+        // Mostrar mensaje cuando no hay tickets del estudiante
         function displayEmptyTickets() {
             ticketsContainer.innerHTML = `
                 <div class="empty-state">
@@ -1554,26 +1687,28 @@
             `;
         }
 
-        // Mostrar la lista de tickets
-        function displayTickets() {
-            if (tickets.length === 0) {
+        // Mostrar la lista de tickets del estudiante
+        function displayStudentTickets() {
+            if (studentTickets.length === 0) {
                 displayEmptyTickets();
                 return;
             }
             
             let ticketsHTML = '<div class="tickets-list">';
             
-            tickets.forEach(ticket => {
+            studentTickets.forEach(ticket => {
                 const statusText = {
                     'Pendiente': 'Pendiente',
                     'Aprobada': 'Aprobada',
-                    'Rechazada': 'Rechazada'
+                    'Rechazada': 'Rechazada',
+                    'Aprobada con observaciones': 'Aprobada con obs.'
                 };
                 
                 const statusClass = {
                     'Pendiente': 'status-pending',
                     'Aprobada': 'status-approved',
-                    'Rechazada': 'status-rejected'
+                    'Rechazada': 'status-rejected',
+                    'Aprobada con observaciones': 'status-approved'
                 };
                 
                 const requestTypeText = {
@@ -1611,10 +1746,10 @@
 
         // Actualizar estadísticas del coordinador
         function updateCoordinatorStats() {
-            const total = tickets.length;
-            const pending = tickets.filter(ticket => ticket.status === 'Pendiente').length;
-            const approved = tickets.filter(ticket => ticket.status === 'Aprobada').length;
-            const rejected = tickets.filter(ticket => ticket.status === 'Rechazada').length;
+            const total = coordinatorTickets.length;
+            const pending = coordinatorTickets.filter(ticket => ticket.status === 'Pendiente').length;
+            const approved = coordinatorTickets.filter(ticket => ticket.status === 'Aprobada').length;
+            const rejected = coordinatorTickets.filter(ticket => ticket.status === 'Rechazada').length;
             
             totalRequests.textContent = total;
             pendingRequests.textContent = pending;
@@ -1625,7 +1760,14 @@
 
         // Cargar solicitudes en la tabla del coordinador
         function loadCoordinatorRequests() {
-            let filteredTickets = [...tickets];
+            // Obtener la tabla cada vez que se llama a la función
+            const coordinatorRequestsTable = document.getElementById('coordinator-requests-table');
+            if (!coordinatorRequestsTable) {
+                console.error('No se encontró la tabla de solicitudes del coordinador');
+                return;
+            }
+            
+            let filteredTickets = [...coordinatorTickets];
             
             // Aplicar filtros
             if (filterStatus.value) {
@@ -1712,8 +1854,8 @@
                             <td>${ticket.date}</td>
                             <td>
                                 <div class="actions-container">
-                                    <button class="action-btn" onclick="viewTicket(${ticket.id})">Ver</button>
-                                    <select class="action-select" onchange="updateTicketStatus(${ticket.id}, this.value)">
+                                    <button class="action-btn" onclick="viewCoordinatorTicket(${ticket.id})">Ver</button>
+                                    <select class="action-select" onchange="updateCoordinatorTicketStatus(${ticket.id}, this.value)">
                                         <option value="Pendiente" ${ticket.status === 'Pendiente' ? 'selected' : ''}>Pendiente</option>
                                         <option value="Aprobada" ${ticket.status === 'Aprobada' ? 'selected' : ''}>Aprobada</option>
                                         <option value="Rechazada" ${ticket.status === 'Rechazada' ? 'selected' : ''}>Rechazada</option>
@@ -1730,8 +1872,8 @@
         }
 
         // Ver detalles de un ticket (coordinador)
-        function viewTicket(ticketId) {
-            const ticket = tickets.find(t => t.id === ticketId);
+        function viewCoordinatorTicket(ticketId) {
+            const ticket = coordinatorTickets.find(t => t.id === ticketId);
             if (ticket) {
                 // Manejar tanto requestType (antiguo) como requestTypes (nuevo)
                 const requestTypes = ticket.requestTypes || [ticket.requestType];
@@ -1742,19 +1884,12 @@
         }
 
         // Actualizar estado de un ticket (coordinador)
-        function updateTicketStatus(ticketId, newStatus) {
-            const ticketIndex = tickets.findIndex(t => t.id === ticketId);
+        function updateCoordinatorTicketStatus(ticketId, newStatus) {
+            const ticketIndex = coordinatorTickets.findIndex(t => t.id === ticketId);
             if (ticketIndex !== -1) {
-                tickets[ticketIndex].status = newStatus;
-                localStorage.setItem('tickets', JSON.stringify(tickets));
+                coordinatorTickets[ticketIndex].status = newStatus;
                 updateCoordinatorStats();
                 loadCoordinatorRequests();
-                
-                // Si estamos en la vista de estudiante, actualizar también
-                if (studentInterface.style.display !== 'none') {
-                    updateTicketCount();
-                    displayTickets();
-                }
             }
         }
 
