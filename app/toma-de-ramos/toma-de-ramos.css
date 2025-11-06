@@ -769,6 +769,7 @@ textarea {
     display: flex;
     gap: 8px;
     align-items: center;
+    flex-wrap: wrap;
 }
 
 .action-btn {
@@ -778,6 +779,16 @@ textarea {
     background-color: white;
     cursor: pointer;
     font-size: 0.8rem;
+    transition: all 0.15s ease;
+}
+
+.action-btn:hover {
+    background-color: #f5f5f5;
+    transform: translateY(-1px);
+}
+
+.action-btn:active {
+    transform: translateY(0);
 }
 
 .action-select {
@@ -785,6 +796,7 @@ textarea {
     border: 1px solid #e0e0e0;
     border-radius: 4px;
     font-size: 0.8rem;
+    min-width: 120px;
 }
 
 /* Login page */
@@ -872,6 +884,11 @@ textarea {
     
     .filter-select, .filter-input {
         min-width: 100%;
+    }
+    
+    .actions-container {
+        flex-direction: column;
+        align-items: flex-start;
     }
 }
 

@@ -40,7 +40,14 @@ const coordinatorTickets = [
         subjects: ["MAT101 - Introducción a las Matemáticas", "FIS101 - Introducción a la Física"],
         situation: "Necesito tomar estos ramos para avanzar en mi malla curricular",
         date: "15/03/2024",
-        status: "Pendiente"
+        status: "Pendiente",
+        comments: [
+            {
+                text: "Por favor verificar que el estudiante cumple con los prerequisitos para estas asignaturas.",
+                date: "16/03/2024 10:30",
+                author: "Coordinador"
+            }
+        ]
     },
     {
         id: 2,
@@ -53,7 +60,14 @@ const coordinatorTickets = [
         subjects: ["PROG101 - Programación Computacional"],
         situation: "Mi horario laboral cambió y necesito cambiar a una sección vespertina",
         date: "16/03/2024",
-        status: "Aprobada"
+        status: "Aprobada",
+        comments: [
+            {
+                text: "Estudiante asignado a la sección vespertina del profesor González.",
+                date: "17/03/2024 14:20",
+                author: "Coordinador"
+            }
+        ]
     },
     {
         id: 3,
@@ -66,7 +80,14 @@ const coordinatorTickets = [
         subjects: ["CAL101 - Cálculo I", "ALG101 - Álgebra I"],
         situation: "Quiero botar Cálculo I porque me resulta muy difícil y tomar Álgebra I en su lugar",
         date: "17/03/2024",
-        status: "Rechazada"
+        status: "Rechazada",
+        comments: [
+            {
+                text: "No se permite botar Cálculo I sin reemplazo equivalente. Álgebra I no es equivalente.",
+                date: "18/03/2024 09:15",
+                author: "Coordinador"
+            }
+        ]
     },
     {
         id: 4,
@@ -79,7 +100,8 @@ const coordinatorTickets = [
         subjects: ["POO101 - Programación Orientada a Objetos", "ED101 - Estructura de Datos"],
         situation: "Necesito cambiar estos ramos porque tengo conflicto de horarios con mi práctica profesional",
         date: "18/03/2024",
-        status: "Pendiente"
+        status: "Pendiente",
+        comments: []
     },
     {
         id: 5,
@@ -92,7 +114,14 @@ const coordinatorTickets = [
         subjects: ["CSI101 - Curso Sello Institucional I: Inglés I"],
         situation: "Quiero adelantar este ramo para tener más disponibilidad el próximo semestre",
         date: "19/03/2024",
-        status: "Aprobada con observaciones"
+        status: "Aprobada con observaciones",
+        comments: [
+            {
+                text: "Aprobado con la condición de mantener promedio superior a 5.5",
+                date: "20/03/2024 11:45",
+                author: "Coordinador"
+            }
+        ]
     },
     {
         id: 6,
@@ -105,7 +134,8 @@ const coordinatorTickets = [
         subjects: ["MEC101 - Mecánica"],
         situation: "Necesito cambiar a la sección del profesor Cárcamo por recomendación de compañeros",
         date: "20/03/2024",
-        status: "Pendiente"
+        status: "Pendiente",
+        comments: []
     },
     {
         id: 7,
@@ -118,7 +148,14 @@ const coordinatorTickets = [
         subjects: ["QUI101 - Química General"],
         situation: "Me di cuenta que no necesito este ramo para mi especialización",
         date: "21/03/2024",
-        status: "Aprobada"
+        status: "Aprobada",
+        comments: [
+            {
+                text: "Aprobado según reglamento de flexibilidad curricular",
+                date: "22/03/2024 16:30",
+                author: "Coordinador"
+            }
+        ]
     },
     {
         id: 8,
@@ -131,7 +168,8 @@ const coordinatorTickets = [
         subjects: ["ARQ101 - Arquitectura de Computadores", "ED101 - Estructura de Datos"],
         situation: "Quiero tomar estos ramos y necesito cambiar de sección para acomodar mi horario de trabajo",
         date: "22/03/2024",
-        status: "Pendiente"
+        status: "Pendiente",
+        comments: []
     }
 ];
 
@@ -569,6 +607,7 @@ function loadCoordinatorRequests() {
                     <td>
                         <div class="actions-container">
                             <button class="action-btn" onclick="viewCoordinatorTicket(${ticket.id})">Ver</button>
+                            <button class="action-btn" onclick="addCommentToTicket(${ticket.id})" style="background-color: #3b82f6; color: white;">Comentar</button>
                             <select class="action-select" onchange="updateCoordinatorTicketStatus(${ticket.id}, this.value)">
                                 <option value="Pendiente" ${ticket.status === 'Pendiente' ? 'selected' : ''}>Pendiente</option>
                                 <option value="Aprobada" ${ticket.status === 'Aprobada' ? 'selected' : ''}>Aprobada</option>
@@ -589,11 +628,48 @@ function loadCoordinatorRequests() {
 function viewCoordinatorTicket(ticketId) {
     const ticket = coordinatorTickets.find(t => t.id === ticketId);
     if (ticket) {
-        // Manejar tanto requestType (antiguo) como requestTypes (nuevo)
         const requestTypes = ticket.requestTypes || [ticket.requestType];
         const requestTypesDisplay = requestTypes.join(', ');
         
-        alert(`Detalles del ticket:\n\nEstudiante: ${ticket.name} ${ticket.lastname}\nRUT: ${ticket.rut}\nEmail: ${ticket.email}\nMalla: ${ticket.curriculum}\nTipos de solicitud: ${requestTypesDisplay}\nAsignaturas: ${ticket.subjects.join(', ')}\nSituación: ${ticket.situation}`);
+        let commentsText = 'No hay comentarios';
+        if (ticket.comments && ticket.comments.length > 0) {
+            commentsText = ticket.comments.map(comment => 
+                `${comment.date} - ${comment.author}:\n${comment.text}`
+            ).join('\n\n');
+        }
+        
+        alert(`DETALLES DEL TICKET:\n\n` +
+              `Estudiante: ${ticket.name} ${ticket.lastname}\n` +
+              `RUT: ${ticket.rut}\n` +
+              `Email: ${ticket.email}\n` +
+              `Malla: ${ticket.curriculum}\n` +
+              `Tipos de solicitud: ${requestTypesDisplay}\n` +
+              `Asignaturas: ${ticket.subjects.join(', ')}\n` +
+              `Situación: ${ticket.situation}\n\n` +
+              `COMENTARIOS:\n${commentsText}`);
+    }
+}
+
+// Agregar comentario a un ticket (coordinador)
+function addCommentToTicket(ticketId) {
+    const ticket = coordinatorTickets.find(t => t.id === ticketId);
+    if (ticket) {
+        const comment = prompt('Ingresa tu comentario para este ticket:');
+        if (comment !== null && comment.trim() !== '') {
+            // Agregar comentario al ticket
+            if (!ticket.comments) {
+                ticket.comments = [];
+            }
+            ticket.comments.push({
+                text: comment.trim(),
+                date: new Date().toLocaleString('es-CL'),
+                author: 'Coordinador'
+            });
+            
+            // Actualizar la interfaz
+            loadCoordinatorRequests();
+            alert('Comentario agregado correctamente');
+        }
     }
 }
 
