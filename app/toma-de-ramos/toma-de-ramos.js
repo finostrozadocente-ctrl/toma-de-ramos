@@ -57,7 +57,7 @@ const coordinatorTickets = [
     },
     {
         id: 3,
-        rut: "34.567.890-1",
+        rut: "22.567.890-1",
         email: "maria.perez@universidad.cl",
         name: "María",
         lastname: "Pérez Silva",
@@ -70,7 +70,7 @@ const coordinatorTickets = [
     },
     {
         id: 4,
-        rut: "45.678.901-2",
+        rut: "21.678.901-2",
         email: "juan.rodriguez@universidad.cl",
         name: "Juan",
         lastname: "Rodríguez Fuentes",
@@ -83,7 +83,7 @@ const coordinatorTickets = [
     },
     {
         id: 5,
-        rut: "56.789.012-3",
+        rut: "19.789.012-3",
         email: "lucia.fernandez@universidad.cl",
         name: "Lucía",
         lastname: "Fernández Castro",
@@ -96,20 +96,20 @@ const coordinatorTickets = [
     },
     {
         id: 6,
-        rut: "67.890.123-4",
-        email: "diego.silva@universidad.cl",
-        name: "Diego",
+        rut: "17.890.123-4",
+        email: "martin.silva@universidad.cl",
+        name: "Martín",
         lastname: "Silva Mendoza",
         requestTypes: ["cambiar-seccion"],
         curriculum: "nueva",
         subjects: ["MEC101 - Mecánica"],
-        situation: "Necesito cambiar a la sección del profesor González por recomendación de compañeros",
+        situation: "Necesito cambiar a la sección del profesor Cárcamo por recomendación de compañeros",
         date: "20/03/2024",
         status: "Pendiente"
     },
     {
         id: 7,
-        rut: "78.901.234-5",
+        rut: "18.901.234-5",
         email: "sofia.herrera@universidad.cl",
         name: "Sofía",
         lastname: "Herrera González",
@@ -122,7 +122,7 @@ const coordinatorTickets = [
     },
     {
         id: 8,
-        rut: "89.012.345-6",
+        rut: "19.012.345-6",
         email: "pablo.munoz@universidad.cl",
         name: "Pablo",
         lastname: "Muñoz Ríos",
