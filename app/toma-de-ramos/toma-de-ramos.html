@@ -228,98 +228,20 @@
     <!-- Vista del coordinador -->
     <div id="coordinator-interface" style="display: none;">
         <div class="coordinator-layout">
-            <aside class="coordinator-sidebar">
-                <div class="coordinator-sidebar-header">
-                    <div class="sidebar-brand">
-                        <div class="sidebar-logo">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <rect width="7" height="9" x="3" y="3" rx="1"></rect>
-                                <rect width="7" height="5" x="14" y="3" rx="1"></rect>
-                                <rect width="7" height="9" x="14" y="12" rx="1"></rect>
-                                <rect width="7" height="5" x="3" y="16" rx="1"></rect>
-                            </svg>
-                        </div>
-                        <div>
-                            <span class="sidebar-title">ICCI</span>
-                            <span class="sidebar-title sidebar-title-blue">Admin</span>
-                        </div>
-                    </div>
-                    <p class="sidebar-subtitle">Gestión Académica</p>
-                </div>
-                <nav class="sidebar-nav">
-                    <button class="sidebar-nav-item">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"></path>
-                            <path d="M3 10a2 2 0 0 1 .709-1.528l7-6a2 2 0 0 1 2.582 0l7 6A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
-                        </svg>
-                        <span>Dashboard</span>
-                    </button>
-                    <button class="sidebar-nav-item active">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"></path>
-                            <path d="M14 2v4a2 2 0 0 0 2 2h4"></path>
-                            <path d="M10 9H8"></path>
-                            <path d="M16 13H8"></path>
-                            <path d="M16 17H8"></path>
-                        </svg>
-                        <span>Solicitudes</span>
-                        <span class="sidebar-nav-badge" id="coordinator-pending-count">0</span>
-                    </button>
-                    <button class="sidebar-nav-item">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M12 7v14"></path>
-                            <path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"></path>
-                        </svg>
-                        <span>Mallas</span>
-                    </button>
-                    <button class="sidebar-nav-item">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M12 7v14"></path>
-                            <path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"></path>
-                        </svg>
-                        <span>Ramos</span>
-                    </button>
-                    <button class="sidebar-nav-item">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
-                            <path d="M16 3.128a4 4 0 0 1 0 7.744"></path>
-                            <circle cx="9" cy="7" r="4"></circle>
-                        </svg>
-                        <span>Profesores</span>
-                    </button>
-                    <button class="sidebar-nav-item">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M9.671 4.136a2.34 2.34 0 0 1 4.659 0 a2.34 2.34 0 0 0 3.319 1.915 a2.34 2.34 0 0 1 2.33 4.033 a2.34 2.34 0 0 0 0 3.831 a2.34 2.34 0 0 1-2.33 4.033 a2.34 2.34 0 0 0-3.319 1.915 a2.34 2.34 0 0 1-4.659 0 a2.34 2.34 0 0 0-3.32-1.915 a2.34 2.34 0 0 1-2.33-4.033 a2.34 2.34 0 0 0 0-3.831 A2.34 2.34 0 0 1 6.35 6.051 a2.34 2.34 0 0 0 3.319-1.915"></path>
-                            <circle cx="12" cy="12" r="3"></circle>
-                        </svg>
-                        <span>Configuración</span>
-                    </button>
-                </nav>
-                <div class="sidebar-footer">
-                    <div class="help-card">
-                        <h4 class="help-card-title">¿Necesitas ayuda?</h4>
-                        <p class="help-card-text">Contacta con soporte técnico</p>
-                        <div class="help-status">
-                            <div class="status-indicator"></div>
-                            <span>Disponible 24/7</span>
-                        </div>
-                    </div>
-                    <button class="logout-btn" id="coordinator-logout">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="m16 17 5-5-5-5"></path>
-                            <path d="M21 12H9"></path>
-                            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
-                        </svg>
-                        <span>Cerrar Sesión</span>
-                    </button>
-                </div>
-            </aside>
             <div class="coordinator-main">
                 <div class="coordinator-header">
                     <h1 class="coordinator-title">Gestión de Solicitudes Estudiantiles</h1>
                     <div class="user-profile">
                         <div class="user-avatar">A</div>
                         <span>Administrador</span>
+                        <button class="logout-btn" id="coordinator-logout">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="m16 17 5-5-5-5"></path>
+                                <path d="M21 12H9"></path>
+                                <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                            </svg>
+                            <span>Cerrar Sesión</span>
+                        </button>
                     </div>
                 </div>
                 <div class="stats-grid">
