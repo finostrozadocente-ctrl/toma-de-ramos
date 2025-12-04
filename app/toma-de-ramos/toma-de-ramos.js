@@ -314,6 +314,8 @@ function showInterface(interfaceName) {
             
             updateCoordinatorStats();
             loadCoordinatorRequests();
+            
+
             break;
     }
 }
@@ -711,25 +713,46 @@ function addCommentToTicket(ticketId) {
 }
 
 // Actualizar estado de un ticket (coordinador)
+function updateCoordinatorStats() {
+    const total = Array.isArray(coordinatorTickets) ? coordinatorTickets.length : 0;
+    const pending = coordinatorTickets.filter(t => t.status === "Pendiente").length;
+    const approved = coordinatorTickets.filter(t => t.status === "Aprobada").length;
+    const approvedObs = coordinatorTickets.filter(t => t.status === "Aprobada con observaciones").length;
+    const rejected = coordinatorTickets.filter(t => t.status === "Rechazada").length;
+
+    // Usar los elementos que sí están en tu HTML
+    if (totalRequests) totalRequests.textContent = total;
+    if (pendingRequests) pendingRequests.textContent = pending;
+    if (approvedRequests) approvedRequests.textContent = approved;
+    if (rejectedRequests) rejectedRequests.textContent = rejected;
+
+    // aprobado con observación (id: approved-observation-requests)
+    const obsEl = document.getElementById('approved-observation-requests');
+    if (obsEl) obsEl.textContent = approvedObs;
+}
+
+// Función para actualizar el estado del ticket desde el select
 function updateCoordinatorTicketStatus(ticketId, newStatus) {
-    try {
-        const ticketIndex = coordinatorTickets.findIndex(t => t.id === ticketId);
-        if (ticketIndex !== -1) {
-            // Actualizar estado
-            coordinatorTickets[ticketIndex].status = newStatus;
-            
-            // Guardar en localStorage
-            localStorage.setItem('coordinatorTickets', JSON.stringify(coordinatorTickets));
-            
-            // Actualizar estadísticas y tabla
-            updateCoordinatorStats();
-            loadCoordinatorRequests();
-            
-            alert(`Estado del ticket actualizado a: ${newStatus}`);
-        }
-    } catch (err) {
-        console.error('Error al actualizar estado del ticket:', err);
-        alert('Ocurrió un error al actualizar el estado. Revisa la consola.');
+    // 1. Buscar el ticket en el array global
+    const ticketIndex = coordinatorTickets.findIndex(t => t.id === ticketId);
+    
+    if (ticketIndex !== -1) {
+        // 2. Actualizar el estado en el objeto
+        coordinatorTickets[ticketIndex].status = newStatus;
+        
+        // 3. Guardar los cambios en localStorage para que no se pierdan al recargar
+        localStorage.setItem('coordinatorTickets', JSON.stringify(coordinatorTickets));
+        
+        // 4. IMPORTANTE: Recargar la tabla y las estadísticas
+        // Al llamar a loadCoordinatorRequests(), la tabla se borra y se vuelve a dibujar
+        // con los datos actualizados, lo que hará que la columna "Estado" cambie de color y texto.
+        loadCoordinatorRequests();
+        updateCoordinatorStats();
+        
+        // Opcional: Mostrar una pequeña notificación o log
+        console.log(`Ticket ${ticketId} actualizado a: ${newStatus}`);
+    } else {
+        console.error("Ticket no encontrado");
     }
 }
 
