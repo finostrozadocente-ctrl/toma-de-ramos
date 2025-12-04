@@ -28,7 +28,7 @@ const subjects = [
 ];
 
 // Datos de ejemplo para el coordinador (8 tickets predefinidos)
-const coordinatorTickets = [
+let coordinatorTickets = [
     {
         id: 1,
         rut: "12.345.678-9",
@@ -175,6 +175,11 @@ const coordinatorTickets = [
 
 // Almacenamiento de tickets del estudiante
 let studentTickets = JSON.parse(localStorage.getItem('studentTickets')) || [];
+// Almacenamiento de tickets del coordinador
+let coordinatorTicketsStorage = JSON.parse(localStorage.getItem('coordinatorTickets')) || coordinatorTickets;
+
+// Usar tickets almacenados o los predefinidos
+coordinatorTickets = coordinatorTicketsStorage.length > 0 ? coordinatorTicketsStorage : coordinatorTickets;
 
 // Elementos del DOM
 const loginPage = document.getElementById('login-page');
@@ -200,8 +205,8 @@ const previewAntigua = document.getElementById('preview-antigua');
 const previewNueva = document.getElementById('preview-nueva');
 const curriculumRadios = document.querySelectorAll('input[name="curriculum"]');
 
-// Elementos del coordinador
-const coordinatorPendingCount = document.getElementById('coordinator-pending-count');
+// Elementos del coordinador (fíjate que #coordinator-pending-count NO existe en tu HTML original)
+// usamos los IDs que sí están en el HTML
 const totalRequests = document.getElementById('total-requests');
 const pendingRequests = document.getElementById('pending-requests');
 const approvedRequests = document.getElementById('approved-requests');
@@ -211,7 +216,7 @@ const filterType = document.getElementById('filter-type');
 const filterCurriculum = document.getElementById('filter-curriculum');
 const filterSearch = document.getElementById('filter-search');
 
-// Inicializar la aplicación
+// --- Inicializar la aplicación ---
 function init() {
     // Generar lista de asignaturas
     generateSubjectsList();
@@ -229,11 +234,10 @@ function init() {
     // Configurar event listeners
     setupEventListeners();
     
-    // Actualizar estadísticas del coordinador
-    updateCoordinatorStats();
-    
-    // Cargar solicitudes en la tabla del coordinador
-    loadCoordinatorRequests();
+    // Guardar tickets iniciales del coordinador si no existen
+    if (!localStorage.getItem('coordinatorTickets') || JSON.parse(localStorage.getItem('coordinatorTickets')).length === 0) {
+        localStorage.setItem('coordinatorTickets', JSON.stringify(coordinatorTickets));
+    }
 }
 
 // Generar la lista de asignaturas en el formulario
@@ -253,19 +257,19 @@ function generateSubjectsList() {
 // Configurar event listeners
 function setupEventListeners() {
     // Login
-    loginStudentBtn.addEventListener('click', () => showInterface('student'));
-    loginCoordinatorBtn.addEventListener('click', () => showInterface('coordinator'));
-    coordinatorLogoutBtn.addEventListener('click', () => showInterface('login'));
+    if (loginStudentBtn) loginStudentBtn.addEventListener('click', () => showInterface('student'));
+    if (loginCoordinatorBtn) loginCoordinatorBtn.addEventListener('click', () => showInterface('coordinator'));
+    if (coordinatorLogoutBtn) coordinatorLogoutBtn.addEventListener('click', () => showInterface('login'));
     
     // Navegación entre páginas del estudiante
-    btnNewTicket.addEventListener('click', () => showPage('new-ticket'));
-    btnMyTickets.addEventListener('click', () => showPage('my-tickets'));
+    if (btnNewTicket) btnNewTicket.addEventListener('click', () => showPage('new-ticket'));
+    if (btnMyTickets) btnMyTickets.addEventListener('click', () => showPage('my-tickets'));
     
     // Envío del formulario
-    ticketForm.addEventListener('submit', handleFormSubmit);
+    if (ticketForm) ticketForm.addEventListener('submit', handleFormSubmit);
     
     // Limpiar formulario
-    btnClearForm.addEventListener('click', clearForm);
+    if (btnClearForm) btnClearForm.addEventListener('click', clearForm);
     
     // Vista previa de mallas en el formulario
     curriculumRadios.forEach(radio => {
@@ -273,29 +277,41 @@ function setupEventListeners() {
     });
     
     // Filtros del coordinador
-    filterStatus.addEventListener('change', loadCoordinatorRequests);
-    filterType.addEventListener('change', loadCoordinatorRequests);
-    filterCurriculum.addEventListener('change', loadCoordinatorRequests);
-    filterSearch.addEventListener('input', loadCoordinatorRequests);
+    if (filterStatus) filterStatus.addEventListener('change', loadCoordinatorRequests);
+    if (filterType) filterType.addEventListener('change', loadCoordinatorRequests);
+    if (filterCurriculum) filterCurriculum.addEventListener('change', loadCoordinatorRequests);
+    if (filterSearch) filterSearch.addEventListener('input', loadCoordinatorRequests);
 }
 
 // Mostrar una interfaz específica
-function showInterface(interface) {
+function showInterface(interfaceName) {
     // Ocultar todas las interfaces
-    loginPage.style.display = 'none';
-    studentInterface.style.display = 'none';
-    coordinatorInterface.style.display = 'none';
+    if (loginPage) loginPage.style.display = 'none';
+    if (studentInterface) studentInterface.style.display = 'none';
+    if (coordinatorInterface) coordinatorInterface.style.display = 'none';
     
     // Mostrar la interfaz seleccionada
-    switch(interface) {
+    switch(interfaceName) {
         case 'login':
-            loginPage.style.display = 'flex';
+            if (loginPage) loginPage.style.display = 'flex';
             break;
         case 'student':
-            studentInterface.style.display = 'block';
+            if (studentInterface) studentInterface.style.display = 'block';
             break;
         case 'coordinator':
-            coordinatorInterface.style.display = 'block';
+            if (coordinatorInterface) coordinatorInterface.style.display = 'block';
+            // Cargar tickets del coordinador desde localStorage
+            const stored = JSON.parse(localStorage.getItem('coordinatorTickets')) || [];
+            if (Array.isArray(stored) && stored.length >= 0) {
+                coordinatorTickets = stored.length > 0 ? stored : coordinatorTickets;
+            }
+            
+            // Resetear filtros
+            if (filterStatus) filterStatus.value = '';
+            if (filterType) filterType.value = '';
+            if (filterCurriculum) filterCurriculum.value = '';
+            if (filterSearch) filterSearch.value = '';
+            
             updateCoordinatorStats();
             loadCoordinatorRequests();
             break;
@@ -305,22 +321,22 @@ function showInterface(interface) {
 // Mostrar una página específica del estudiante
 function showPage(page) {
     // Ocultar todas las páginas
-    pageNewTicket.classList.remove('active');
-    pageMyTickets.classList.remove('active');
+    if (pageNewTicket) pageNewTicket.classList.remove('active');
+    if (pageMyTickets) pageMyTickets.classList.remove('active');
     
     // Desactivar todos los botones
-    btnNewTicket.classList.remove('active');
-    btnMyTickets.classList.remove('active');
+    if (btnNewTicket) btnNewTicket.classList.remove('active');
+    if (btnMyTickets) btnMyTickets.classList.remove('active');
     
     // Mostrar la página seleccionada
     switch(page) {
         case 'new-ticket':
-            pageNewTicket.classList.add('active');
-            btnNewTicket.classList.add('active');
+            if (pageNewTicket) pageNewTicket.classList.add('active');
+            if (btnNewTicket) btnNewTicket.classList.add('active');
             break;
         case 'my-tickets':
-            pageMyTickets.classList.add('active');
-            btnMyTickets.classList.add('active');
+            if (pageMyTickets) pageMyTickets.classList.add('active');
+            if (btnMyTickets) btnMyTickets.classList.add('active');
             displayStudentTickets();
             break;
     }
@@ -329,17 +345,18 @@ function showPage(page) {
 // Actualizar la vista previa de mallas en el formulario
 function updateCurriculumPreview() {
     // Ocultar todas las vistas previas
-    previewAntigua.classList.remove('active');
-    previewNueva.classList.remove('active');
+    if (previewAntigua) previewAntigua.classList.remove('active');
+    if (previewNueva) previewNueva.classList.remove('active');
     
     // Obtener la malla seleccionada
-    const selectedCurriculum = document.querySelector('input[name="curriculum"]:checked').value;
+    const selected = document.querySelector('input[name="curriculum"]:checked');
+    const selectedCurriculum = selected ? selected.value : 'antigua';
     
     // Mostrar la vista previa correspondiente
     if (selectedCurriculum === 'antigua') {
-        previewAntigua.classList.add('active');
+        if (previewAntigua) previewAntigua.classList.add('active');
     } else {
-        previewNueva.classList.add('active');
+        if (previewNueva) previewNueva.classList.add('active');
     }
 }
 
@@ -348,10 +365,15 @@ function handleFormSubmit(e) {
     e.preventDefault();
     
     // Obtener datos del formulario
-    const rut = document.getElementById('rut').value;
-    const email = document.getElementById('email').value;
-    const name = document.getElementById('name').value;
-    const lastname = document.getElementById('lastname').value;
+    const rutEl = document.getElementById('rut');
+    const emailEl = document.getElementById('email');
+    const nameEl = document.getElementById('name');
+    const lastnameEl = document.getElementById('lastname');
+    
+    const rut = rutEl ? rutEl.value.trim() : '';
+    const email = emailEl ? emailEl.value.trim() : '';
+    const name = nameEl ? nameEl.value.trim() : '';
+    const lastname = lastnameEl ? lastnameEl.value.trim() : '';
     
     // Obtener tipos de solicitud seleccionados (múltiples)
     const requestTypeCheckboxes = document.querySelectorAll('input[name="request-type"]:checked');
@@ -363,8 +385,10 @@ function handleFormSubmit(e) {
         return;
     }
     
-    const curriculum = document.querySelector('input[name="curriculum"]:checked').value;
-    const situation = document.getElementById('situation').value;
+    const curriculumEl = document.querySelector('input[name="curriculum"]:checked');
+    const curriculum = curriculumEl ? curriculumEl.value : 'antigua';
+    const situationEl = document.getElementById('situation');
+    const situation = situationEl ? situationEl.value.trim() : '';
     
     // Obtener asignaturas seleccionadas
     const selectedSubjects = [];
@@ -386,12 +410,13 @@ function handleFormSubmit(e) {
         email,
         name,
         lastname,
-        requestTypes, // Ahora es un array
+        requestTypes,
         curriculum,
         subjects: selectedSubjects,
         situation,
         date: new Date().toLocaleDateString('es-CL'),
-        status: 'Pendiente'
+        status: 'Pendiente',
+        comments: []
     };
     
     // Agregar ticket a la lista del estudiante
@@ -399,6 +424,10 @@ function handleFormSubmit(e) {
     
     // Guardar en localStorage (solo para el estudiante)
     localStorage.setItem('studentTickets', JSON.stringify(studentTickets));
+    
+    // También agregar a la lista del coordinador
+    coordinatorTickets.push(newTicket);
+    localStorage.setItem('coordinatorTickets', JSON.stringify(coordinatorTickets));
     
     // Actualizar la interfaz del estudiante
     updateTicketCount();
@@ -414,10 +443,11 @@ function handleFormSubmit(e) {
 
 // Limpiar el formulario
 function clearForm() {
-    ticketForm.reset();
+    if (ticketForm) ticketForm.reset();
     
     // Restablecer valores por defecto
-    document.getElementById('curriculum-antigua').checked = true;
+    const defaultCurr = document.getElementById('curriculum-antigua');
+    if (defaultCurr) defaultCurr.checked = true;
     
     // Actualizar vista previa
     updateCurriculumPreview();
@@ -425,11 +455,12 @@ function clearForm() {
 
 // Actualizar el contador de tickets del estudiante
 function updateTicketCount() {
-    ticketCount.textContent = studentTickets.length;
+    if (ticketCount) ticketCount.textContent = studentTickets.length;
 }
 
 // Mostrar mensaje cuando no hay tickets del estudiante
 function displayEmptyTickets() {
+    if (!ticketsContainer) return;
     ticketsContainer.innerHTML = `
         <div class="empty-state">
             <div class="empty-icon">📅</div>
@@ -441,6 +472,8 @@ function displayEmptyTickets() {
 
 // Mostrar la lista de tickets del estudiante
 function displayStudentTickets() {
+    if (!ticketsContainer) return;
+
     if (studentTickets.length === 0) {
         displayEmptyTickets();
         return;
@@ -470,15 +503,14 @@ function displayStudentTickets() {
             'cambiar-seccion': 'Cambiar de Sección'
         };
         
-        // Manejar tanto requestType (antiguo) como requestTypes (nuevo)
-        const requestTypes = ticket.requestTypes || [ticket.requestType];
-        const requestTypesDisplay = requestTypes.map(type => requestTypeText[type]).join(', ');
+        const requestTypes = ticket.requestTypes || [];
+        const requestTypesDisplay = requestTypes.map(type => requestTypeText[type] || type).join(', ');
         
         ticketsHTML += `
             <div class="ticket-item">
                 <div class="ticket-header">
                     <div class="ticket-title">Solicitud: ${requestTypesDisplay}</div>
-                    <div class="ticket-status ${statusClass[ticket.status]}">${statusText[ticket.status]}</div>
+                    <div class="ticket-status ${statusClass[ticket.status] || 'status-pending'}">${statusText[ticket.status] || 'Pendiente'}</div>
                 </div>
                 <div class="ticket-details">
                     <div><strong>Asignaturas:</strong> ${ticket.subjects.join(', ')}</div>
@@ -499,52 +531,55 @@ function displayStudentTickets() {
 // Actualizar estadísticas del coordinador
 function updateCoordinatorStats() {
     const total = coordinatorTickets.length;
+    // contar pendientes
     const pending = coordinatorTickets.filter(ticket => ticket.status === 'Pendiente').length;
-    const approved = coordinatorTickets.filter(ticket => ticket.status === 'Aprobada').length;
+    // aprobadas incluye "Aprobada" y "Aprobada con observaciones"
+    const approved = coordinatorTickets.filter(ticket => ticket.status === 'Aprobada' || ticket.status === 'Aprobada con observaciones').length;
     const rejected = coordinatorTickets.filter(ticket => ticket.status === 'Rechazada').length;
     
-    totalRequests.textContent = total;
-    pendingRequests.textContent = pending;
-    approvedRequests.textContent = approved;
-    rejectedRequests.textContent = rejected;
-    coordinatorPendingCount.textContent = pending;
+    if (totalRequests) totalRequests.textContent = total;
+    if (pendingRequests) pendingRequests.textContent = pending;
+    if (approvedRequests) approvedRequests.textContent = approved;
+    if (rejectedRequests) rejectedRequests.textContent = rejected;
+    
+    // Si en algún momento añades un elemento con id 'coordinator-pending-count', se actualizará; si no existe, lo omitimos.
+    const coordinatorPendingCountEl = document.getElementById('coordinator-pending-count');
+    if (coordinatorPendingCountEl) coordinatorPendingCountEl.textContent = pending;
 }
 
 // Cargar solicitudes en la tabla del coordinador
 function loadCoordinatorRequests() {
-    // Obtener la tabla cada vez que se llama a la función
+    // Obtener la tabla
     const coordinatorRequestsTable = document.getElementById('coordinator-requests-table');
     if (!coordinatorRequestsTable) {
-        console.error('No se encontró la tabla de solicitudes del coordinador');
         return;
     }
     
     let filteredTickets = [...coordinatorTickets];
     
     // Aplicar filtros
-    if (filterStatus.value) {
+    if (filterStatus && filterStatus.value) {
         filteredTickets = filteredTickets.filter(ticket => ticket.status === filterStatus.value);
     }
     
-    if (filterType.value) {
-        // Para compatibilidad con tickets antiguos y nuevos
+    if (filterType && filterType.value) {
         filteredTickets = filteredTickets.filter(ticket => {
-            const requestTypes = ticket.requestTypes || [ticket.requestType];
+            const requestTypes = ticket.requestTypes || [];
             return requestTypes.includes(filterType.value);
         });
     }
     
-    if (filterCurriculum.value) {
+    if (filterCurriculum && filterCurriculum.value) {
         filteredTickets = filteredTickets.filter(ticket => ticket.curriculum === filterCurriculum.value);
     }
     
-    if (filterSearch.value) {
+    if (filterSearch && filterSearch.value) {
         const searchTerm = filterSearch.value.toLowerCase();
         filteredTickets = filteredTickets.filter(ticket => 
-            ticket.name.toLowerCase().includes(searchTerm) ||
-            ticket.lastname.toLowerCase().includes(searchTerm) ||
-            ticket.rut.includes(searchTerm) ||
-            ticket.email.toLowerCase().includes(searchTerm)
+            (ticket.name && ticket.name.toLowerCase().includes(searchTerm)) ||
+            (ticket.lastname && ticket.lastname.toLowerCase().includes(searchTerm)) ||
+            (ticket.rut && ticket.rut.toLowerCase().includes(searchTerm)) ||
+            (ticket.email && ticket.email.toLowerCase().includes(searchTerm))
         );
     }
     
@@ -568,9 +603,8 @@ function loadCoordinatorRequests() {
                 'cambiar-seccion': 'Cambiar de sección'
             };
             
-            // Manejar tanto requestType (antiguo) como requestTypes (nuevo)
-            const requestTypes = ticket.requestTypes || [ticket.requestType];
-            const requestTypesDisplay = requestTypes.map(type => requestTypeText[type]).join(', ');
+            const requestTypes = ticket.requestTypes || [];
+            const requestTypesDisplay = requestTypes.map(type => requestTypeText[type] || type).join(', ');
             
             const curriculumText = {
                 'antigua': 'IC05',
@@ -586,24 +620,24 @@ function loadCoordinatorRequests() {
             
             tableHTML += `
                 <tr>
-                    <td>${ticket.rut}</td>
+                    <td>${ticket.rut || ''}</td>
                     <td>
                         <div class="student-info">
-                            ${ticket.name} ${ticket.lastname}
-                            <div class="student-email">${ticket.email}</div>
+                            ${ticket.name || ''} ${ticket.lastname || ''}
+                            <div class="student-email">${ticket.email || ''}</div>
                         </div>
                     </td>
-                    <td>${curriculumText[ticket.curriculum]}</td>
+                    <td>${curriculumText[ticket.curriculum] || ticket.curriculum || ''}</td>
                     <td>
-                        ${ticket.subjects.map(subject => `<span class="subject-tag">${subject.split(' - ')[0]}</span>`).join('')}
+                        ${ticket.subjects ? ticket.subjects.map(subject => `<span class="subject-tag">${subject.split(' - ')[0]}</span>`).join('') : ''}
                     </td>
                     <td>
                         <span class="request-type-tag">${requestTypesDisplay}</span>
                     </td>
                     <td>
-                        <span class="${statusClass[ticket.status]}">${ticket.status}</span>
+                        <span class="${statusClass[ticket.status] || 'status-tag status-pending-coord'}">${ticket.status}</span>
                     </td>
-                    <td>${ticket.date}</td>
+                    <td>${ticket.date || ''}</td>
                     <td>
                         <div class="actions-container">
                             <button class="action-btn" onclick="viewCoordinatorTicket(${ticket.id})">Ver</button>
@@ -628,7 +662,7 @@ function loadCoordinatorRequests() {
 function viewCoordinatorTicket(ticketId) {
     const ticket = coordinatorTickets.find(t => t.id === ticketId);
     if (ticket) {
-        const requestTypes = ticket.requestTypes || [ticket.requestType];
+        const requestTypes = ticket.requestTypes || [];
         const requestTypesDisplay = requestTypes.join(', ');
         
         let commentsText = 'No hay comentarios';
@@ -644,7 +678,7 @@ function viewCoordinatorTicket(ticketId) {
               `Email: ${ticket.email}\n` +
               `Malla: ${ticket.curriculum}\n` +
               `Tipos de solicitud: ${requestTypesDisplay}\n` +
-              `Asignaturas: ${ticket.subjects.join(', ')}\n` +
+              `Asignaturas: ${ticket.subjects ? ticket.subjects.join(', ') : ''}\n` +
               `Situación: ${ticket.situation}\n\n` +
               `COMENTARIOS:\n${commentsText}`);
     }
@@ -652,19 +686,22 @@ function viewCoordinatorTicket(ticketId) {
 
 // Agregar comentario a un ticket (coordinador)
 function addCommentToTicket(ticketId) {
-    const ticket = coordinatorTickets.find(t => t.id === ticketId);
-    if (ticket) {
+    const ticketIndex = coordinatorTickets.findIndex(t => t.id === ticketId);
+    if (ticketIndex !== -1) {
         const comment = prompt('Ingresa tu comentario para este ticket:');
         if (comment !== null && comment.trim() !== '') {
             // Agregar comentario al ticket
-            if (!ticket.comments) {
-                ticket.comments = [];
+            if (!coordinatorTickets[ticketIndex].comments) {
+                coordinatorTickets[ticketIndex].comments = [];
             }
-            ticket.comments.push({
+            coordinatorTickets[ticketIndex].comments.push({
                 text: comment.trim(),
                 date: new Date().toLocaleString('es-CL'),
                 author: 'Coordinador'
             });
+            
+            // Guardar en localStorage
+            localStorage.setItem('coordinatorTickets', JSON.stringify(coordinatorTickets));
             
             // Actualizar la interfaz
             loadCoordinatorRequests();
@@ -675,11 +712,24 @@ function addCommentToTicket(ticketId) {
 
 // Actualizar estado de un ticket (coordinador)
 function updateCoordinatorTicketStatus(ticketId, newStatus) {
-    const ticketIndex = coordinatorTickets.findIndex(t => t.id === ticketId);
-    if (ticketIndex !== -1) {
-        coordinatorTickets[ticketIndex].status = newStatus;
-        updateCoordinatorStats();
-        loadCoordinatorRequests();
+    try {
+        const ticketIndex = coordinatorTickets.findIndex(t => t.id === ticketId);
+        if (ticketIndex !== -1) {
+            // Actualizar estado
+            coordinatorTickets[ticketIndex].status = newStatus;
+            
+            // Guardar en localStorage
+            localStorage.setItem('coordinatorTickets', JSON.stringify(coordinatorTickets));
+            
+            // Actualizar estadísticas y tabla
+            updateCoordinatorStats();
+            loadCoordinatorRequests();
+            
+            alert(`Estado del ticket actualizado a: ${newStatus}`);
+        }
+    } catch (err) {
+        console.error('Error al actualizar estado del ticket:', err);
+        alert('Ocurrió un error al actualizar el estado. Revisa la consola.');
     }
 }
 
